@@ -59,13 +59,20 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   */
 	// transfer the state into radar framework 
 	double rho = sqrt(x_(0)*x_(0)+x_(1)*x_(1));
-	double theta = atan(x_(1)/x_(0));
+	double theta = atan2(x_(1),x_(0));
+	//avoid zero division
+	if(rho < 0.0001)
+		return;
 	double rho_dot = (x_(0)*x_(2) + x_(1)*x_(3)) / rho;
 	VectorXd hj = VectorXd(3);
 	hj << rho, theta, rho_dot;
 	
 	VectorXd y = z - hj;
-	
+	//keeping the rho between -2*pi and 2*pi
+	while (y[1] < -M_PI)
+		y[1] += 2 * M_PI;
+	while (y[1] > M_PI)
+		y[1] -= 2 * M_PI;
 	//the following is the same as the linear KF
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
@@ -78,6 +85,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	long x_size = x_.size();
 	MatrixXd I = MatrixXd::Identity(x_size, x_size);
 	P_ = (I - K * H_) * P_;
-  
+	
   
 }

@@ -93,12 +93,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 		double y = measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]);
 	    double vx = measurement_pack.raw_measurements_[2] * cos(measurement_pack.raw_measurements_[1]);
 		double vy = measurement_pack.raw_measurements_[2] * sin(measurement_pack.raw_measurements_[1]);		
-		if (fabs(x+y)<0.0001)
-		{
-			x=0.0001;
-			y=0.0001;
-			cout << "object stuck in sensor";
-		}
+
 		// set the state with converted radar data
 		ekf_.x_ << x, y, vx, vy;
 		previous_timestamp_ = measurement_pack.timestamp_;	  
@@ -142,25 +137,27 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	double dt_3 = dt_2 * dt;
 	double dt_4 = dt_3 * dt;
 	
-	previous_timestamp_=measurement_pack.timestamp_;
 	//insert elapsed time into F
+	/*
 	ekf_.F_ << 1, 0, dt, 0,
                0, 1, 0, dt,
                0, 0, 1, 0,
 			   0, 0, 0, 1;
 	cout << "F" << endl;
 	cout << ekf_.F_ << endl;
-
+	*/
 	//update Q
 	double noise_ax = 9.0;
 	double noise_ay = 9.0;
-	cout << "Q" << endl;
+
     ekf_.Q_ << dt_4/4*noise_ax, 0, 					dt_3/2*noise_ax, 	0,
 			   0, 				dt_4/4*noise_ay,	0, 					dt_3/2*noise_ay,
 			   dt_3/2*noise_ax, 0, 					dt_2*noise_ax, 		0,
 			   0, 				dt_3/2*noise_ay, 	0, 					dt_2*noise_ay;
-	cout << ekf_.Q_ << endl;
+
 	ekf_.Predict();
+	// only if the state was actually updated, refresh the timestap. 
+  	previous_timestamp_=measurement_pack.timestamp_;
   /*****************************************************************************
    *  Update
    ****************************************************************************/
@@ -190,6 +187,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     z_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1];
 	ekf_.Update(z_);
   }
+
 
   // print the output
   cout << "x_ = " << ekf_.x_ << endl;
