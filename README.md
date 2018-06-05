@@ -4,7 +4,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 In this project you will utilize a kalman filter to estimate the state of a moving object of interest with noisy lidar and radar measurements. Passing the project requires obtaining RMSE values that are lower than the tolerance outlined in the project rubric. 
 
-> ## How to run the code 
+## How to run the code 
 1. mkdir build
 2. cd build
 3. cmake ..
@@ -12,7 +12,7 @@ In this project you will utilize a kalman filter to estimate the state of a movi
 
 Without uWebSocketIO or the simulator, the following lines serve as a test: 
 
-> 5a. ./ExtendedKF ../data/sample-laser-radar-measurement-data-1.txt output1.txt > input1.log
+5a. ./ExtendedKF ../data/sample-laser-radar-measurement-data-1.txt output1.txt > input1.log
 6a. ./ExtendedKF ../data/sample-laser-radar-measurement-data-2.txt output2.txt > input2.log
 
 The detailed instructions may be found [here](https://github.com/jensakut/CarND-Extended-Kalman-Filter-Project/blob/master/TASK.md). 
@@ -26,11 +26,12 @@ VX=0.3854
 VY=0.4243
 
 The simulator is shown in the picture. The measurements in red and blue of the car's position serve to estimate the green trajectory. 
-![alt text](https://github.com/jensakut/CarND-Extended-Kalman-Filter-Project/blob/master/images/resulting_rmse.PNG)( "simulation result")
+
+![alt text](https://github.com/jensakut/CarND-Extended-Kalman-Filter-Project/blob/master/images/resulting_rmse.PNG)
 
 > Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons.
 
-The sensor fusion algorithm was designed using the codes taught in the preceding lessons. In main.cpp the interface to the simulation is called and the classes are called. 
+The sensor fusion algorithm was designed using the codes taught in the preceding lessons. In main.cpp the interface to the simulation and the classes are called. 
 The kalman-filter.cpp contains the kalman matrices and vectors as well as the update and prediction function for a linear and extended kalman-filter. 
 Besides using tools class to compute a specific jacobian for the radar, the kalman-filter is entirely generic and reusable. 
 The FusionEKF class uses the Kalman_filter class (without any inheritance) to implement the specific matrices needed for computation. 
