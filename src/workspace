@@ -1,0 +1,13 @@
+<NotepadPlus>
+    <Project name="EKF P1">
+        <File name="FusionEKF.cpp" />
+        <File name="FusionEKF.h" />
+        <File name="json.hpp" />
+        <File name="kalman_filter.cpp" />
+        <File name="kalman_filter.h" />
+        <File name="main.cpp" />
+        <File name="measurement_package.h" />
+        <File name="tools.cpp" />
+        <File name="tools.h" />
+    </Project>
+</NotepadPlus>

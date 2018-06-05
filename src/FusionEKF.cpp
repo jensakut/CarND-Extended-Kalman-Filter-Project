@@ -63,7 +63,9 @@ FusionEKF::FusionEKF() {
 FusionEKF::~FusionEKF() {}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
-
+	/*if (measurement_pack.sensor_type_ == MeasurementPackage::LASER){
+		return;
+	}*/
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
@@ -156,6 +158,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 			   0, 				dt_3/2*noise_ay, 	0, 					dt_2*noise_ay;
 
 	ekf_.Predict();
+	cout << "Predicted" << endl;
 	// only if the state was actually updated, refresh the timestap. 
   	previous_timestamp_=measurement_pack.timestamp_;
   /*****************************************************************************
@@ -180,11 +183,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   } else {
     // Laser updates
-	cout << "Laser";
+	cout << "Laser " << endl;
     ekf_.R_ = R_laser_;
 	ekf_.H_ = H_laser_;
+	cout << "R, H" << endl;
 	VectorXd z_ = VectorXd(2);
+	cout << "z:" << endl;
+
     z_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1];
+	cout << "Updating.." << endl;
 	ekf_.Update(z_);
   }
 
